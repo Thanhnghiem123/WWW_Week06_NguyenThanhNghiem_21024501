@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1e2a3a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #ff6f61;
+        }
+
+        .navbar h1 {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffdd57;
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Create Post Button */
+        .create-post {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .create-post a {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #ff6f61;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .create-post a:hover {
+            background-color: #ff4b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Post Card */
+        .post {
+            background-color: #f9f9fc;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .post:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .post .author {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
+        .post .author:hover {
+            text-decoration: underline;
+            color: #d35d48;
+        }
+
+        .post h2 {
+            font-size: 26px;
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .post p {
+            margin-top: 12px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .post .content {
+            margin-top: 15px;
+            color: #444;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .post .date {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .actions a button,
+        .actions form button {
+            padding: 10px 25px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-left: 12px;
+        }
+
+        .actions a button:hover,
+        .actions form button:hover {
+            background-color: #d35d48;
+            transform: scale(1.05);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #ff6f61;
+            padding: 12px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 0 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .pagination .active {
+            background-color: #ff6f61;
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 10px;
+            color: #777;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #777;
+            font-size: 14px;
+            padding: 20px;
+            background-color: #f9f9fc;
+        }
+
+        footer a {
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h1 th:text="${user.lastName + ' ' + user.firstName}">Name</h1>
+    <div>
+        <a th:href="@{/users/profile/{id}(id=${user.id})}">Profile</a>
+        <a th:href="@{/users/signout}">Sign Out</a>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+    <!-- Create Post Button -->
+    <div class="create-post">
+        <a th:href="@{/posts/show_add_form}">Create Post</a>
+    </div>
+
+    <!-- Post List -->
+    <div th:each="post : ${posts}" class="post">
+        <a th:href="@{/users/profile/{id}(id=${post.author.id})}" class="author" th:text="${post.author.lastName + ' ' + post.author.firstName}">Author Name</a>
+        <h2 th:text="${post.title}">Post Title</h2>
+        <p th:text="${post.summary}">Post Summary...</p>
+        <div class="content" th:text="${post.content}">Post Content...</div>
+        <div class="date" th:text="${#dates.format(post.createdAt, 'dd/MM/yyyy')}">Date</div>
+        <div class="actions" th:if="${session.currentUser.id == post.author.id}">
+            <a th:href="@{/posts/show_update_form/{id}(id=${post.id})}">
+                <button>Edit</button>
+            </a>
+            <form th:action="@{/posts/delete/{id}(id=${post.id})}" method="post">
+                <button>Delete</button>
+            </form>
+        </div>
+        <div class="actions">
+            <a th:href="@{/comments/list/{id}(id=${post.id})}">
+                <button>Comment</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a th:if="${posts.number > 0}" th:href="@{/users/home(size=${posts.size}, page=1)}">&lt;&lt;</a>
+
+        <span th:if="${posts.number > 5}" class="ellipsis">...</span>
+
+        <a th:each="pageNumber : ${#numbers.sequence(posts.number - 4 , posts.number + 4)}"
+           th:if="${pageNumber >= 1 && pageNumber <= posts.totalPages}"
+           th:classappend="${pageNumber == posts.number + 1} ? 'active'"
+           th:href="@{/users/home(size=${posts.size}, page=${pageNumber})}"
+           th:text="${pageNumber}"></a>
+
+        <span th:if="${posts.number < posts.totalPages - 5}" class="ellipsis">...</span>
+
+        <a th:if="${posts.number < posts.totalPages - 1}" th:href="@{/users/home(size=${posts.size}, page=${posts.totalPages})}">&gt;&gt;</a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>Created by <a href="http://">Thanh Nghiem</a></p>
+</footer>
+
+</body>
+</html>

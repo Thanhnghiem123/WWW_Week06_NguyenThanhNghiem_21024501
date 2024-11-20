@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Comments</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f8f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Comment Section */
+        .comment-section {
+            margin-top: 30px;
+        }
+
+        .comment {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            background-color: #fafafa;
+        }
+
+        .comment:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .comment img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #ddd;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-header .username {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .comment-header .date {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .comment-actions button {
+            background: none;
+            border: none;
+            color: #007bff;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .comment-actions button:hover {
+            background-color: #e7f3ff;
+            color: #0056b3;
+        }
+
+        /* Add Comment Section */
+        .add-comment {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
+        .add-comment input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .add-comment input:focus {
+            border-color: #007bff;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .add-comment button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .add-comment button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .add-comment button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+
+            .comment img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .add-comment input,
+            .add-comment button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="post-title" th:text="${postTitle}">Sample Post Title</div>
+
+    <div class="comment-section">
+        <div class="comment" th:each="comment : ${postComments}">
+            <img src="profile.jpg" alt="User Avatar">
+            <div class="comment-content">
+                <div class="comment-header">
+                    <span class="username" th:text="${comment.user.firstName + ' ' + comment.user.lastName}">John Doe</span>
+                    <span class="date" th:text="${comment.createdAt}">2024-11-17</span>
+                </div>
+                <p class="comment-text" th:text="${comment.content}">This is a sample comment.</p>
+                <div class="comment-actions" th:if="${comment.user.id == currentUser.id}">
+                    <a th:href="@{/comments/show_update_form/{id}(id=${comment.id})}">
+                        <button>Edit</button>
+                    </a>
+                    <form th:action="@{/comments/delete/{id}(id=${comment.id})}" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <form class="add-comment" th:action="@{/comments/add/{id}(id=${postId})}" th:object="${postComment}" method="post">
+            <input type="text" placeholder="Write a title..." th:field="*{title}">
+            <input type="text" placeholder="Write a comment..." th:field="*{content}">
+            <button type="submit">Post</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

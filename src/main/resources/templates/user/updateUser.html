@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Update User</h1>
+    <form th:action="@{/users/updateUser}" th:object="${user}" method="post">
+        <label for="id">ID</label>
+        <input type="text" id="id" th:field="*{id}" readonly>
+
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required>
+
+        <label for="middleName">Middle Name</label>
+        <input type="text" id="middleName" th:field="*{middleName}">
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required>
+
+        <label for="mobile">Mobile</label>
+        <input type="text" id="mobile" th:field="*{mobile}" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" th:field="*{passwordHash}">
+
+        <label for="intro">Intro</label>
+        <textarea id="intro" th:field="*{intro}"></textarea>
+
+        <label for="profile">Profile</label>
+        <textarea id="profile" th:field="*{profile}"></textarea>
+
+        <button type="submit">Update</button>
+    </form>
+</div>
+</body>
+</html>
