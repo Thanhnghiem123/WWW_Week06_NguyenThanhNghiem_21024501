@@ -184,21 +184,27 @@
     <div class="post-title" th:text="${postTitle}">Sample Post Title</div>
 
     <div class="comment-section">
-        <div class="comment" th:each="comment : ${postComments}">
-            <img src="profile.jpg" alt="User Avatar">
-            <div class="comment-content">
-                <div class="comment-header">
-                    <span class="username" th:text="${comment.user.firstName + ' ' + comment.user.lastName}">John Doe</span>
-                    <span class="date" th:text="${comment.createdAt}">2024-11-17</span>
-                </div>
-                <p class="comment-text" th:text="${comment.content}">This is a sample comment.</p>
-                <div class="comment-actions" th:if="${comment.user.id == currentUser.id}">
-                    <a th:href="@{/comments/show_update_form/{id}(id=${comment.id})}">
-                        <button>Edit</button>
-                    </a>
-                    <form th:action="@{/comments/delete/{id}(id=${comment.id})}" method="post">
-                        <button type="submit">Delete</button>
-                    </form>
+        <div class="comment" th:each="comment : ${postComments}"  th:if="${comment.published or comment.user.id == currentUser.id}">
+<!--            Chi hien thi comments neu
+            comment.published = true ||     comment.user.id = currentUser.id
+    -->
+
+            <div >
+                <img src="profile.jpg" alt="User Avatar">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="username" th:text="${comment.user.firstName + ' ' + comment.user.lastName}">John Doe</span>
+                        <span class="date" th:text="${comment.createdAt}">2024-11-17</span>
+                    </div>
+                    <p class="comment-text" th:text="${comment.content}">This is a sample comment.</p>
+                    <div class="comment-actions" th:if="${comment.user.id == currentUser.id}">
+                        <a th:href="@{/comments/show_update_form/{id}(id=${comment.id})}">
+                            <button>Edit</button>
+                        </a>
+                        <form th:action="@{/comments/delete/{id}(id=${comment.id})}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
